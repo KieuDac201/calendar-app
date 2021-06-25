@@ -10,15 +10,15 @@ const yearBtns = document.querySelectorAll('.calendar__top-year button')
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const date = new Date();
-let day = date.getDay() === 0 ? 7 : date.getDay()
+let day = date.getDate()
 let month = date.getMonth()
 let year = date.getFullYear()
 let numberDayOfMonth = 0;
 
-renderCurrentDate( month, year)
+renderCurrentDate(day, month, year)
 
 function getNumberDayOfMonth(month, year){
-    console.log(month);
+    
     if([1, 3, 5, 7, 8, 10, 12].includes(month)){
         return 31
     }
@@ -33,11 +33,11 @@ function getNumberDayOfMonth(month, year){
     }
 }
 
-function renderCurrentDate(month, year) {
+function renderCurrentDate(day, month, year) {
     numberDayOfMonth = getNumberDayOfMonth(month + 1, year)
     monthElement.textContent = months[month]
     yearElement.textContent = year
-    console.log(numberDayOfMonth);
+    
 
     const date2 = new Date(year, month, 1)
     const fistDayOfMonth = date2.getDay() === 0 ? 7 : date2.getDay();
@@ -58,6 +58,13 @@ function renderCurrentDate(month, year) {
         }
     }
     dateElement.innerHTML = html
+   
+        if(day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()){
+            dateElement.querySelectorAll('div')[day + fistDayOfMonth - 2].style.backgroundColor = 'pink'
+        }
+        
+    
+    
 }
 monthElement.addEventListener('click', () => {
     monthPicker.classList.add('show')
@@ -68,7 +75,7 @@ monthPickerList.forEach(e => {
         let dataMonth = +item.target.getAttribute('data-month')
         monthPicker.classList.remove('show')
         month = dataMonth
-        renderCurrentDate(month, year)
+        renderCurrentDate(day, month, year)
         setTimeout(() => {
             dateElement.classList.add('active')
         }, 200)
@@ -84,7 +91,7 @@ yearBtns.forEach(btn => {
         if(btn.classList.value === 'prev'){
             year--
         }
-        renderCurrentDate(month, year)
+        renderCurrentDate(day, month, year)
         setTimeout(() => {
             dateElement.classList.add('active')
         }, 200)
